@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101019">
+<title>En tu playlist · Adivina la canción</title>
+<link rel="stylesheet" href="styles.css">
+<script defer src="core.js"></script><script defer src="app.js"></script>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="./index.html"><span class="brand-icon">♫</span> en tu playlist<span class="brand-dot">.</span></a><span class="top-label">DISTINTOS GUSTOS. UN MISMO PLAY.</span></header>
+<main>
+<section class="intro"><span class="eyebrow"><span class="live-dot"></span> EL ROMPEHIELO MUSICAL</span><h1>Una canción.<br>Una historia. <em>¿De quién?</em></h1><p>Descubran la música que los conecta, aunque estén a kilómetros.</p></section>
+<nav class="steps" aria-label="Secciones"><button data-tab="setup" class="active"><span>01</span> La playlist</button><button data-tab="game"><span>02</span> La partida</button><button data-tab="results"><span>03</span> El marcador</button></nav>
+<div id="notice" class="notice" role="status" hidden></div>
+<section id="setup" class="view">
+<div class="setup-grid">
+<article class="panel entry-panel"><div class="section-heading"><div><span class="eyebrow">ANTES DEL PLAY</span><h2>Agrega una canción</h2></div><span class="small-icon">↗</span></div>
+<p class="muted">Pide dos favoritas por persona y guárdalas aquí. El título será un secreto durante la ronda.</p>
+<form id="song-form">
+<label>¿Quién la eligió?<input id="owner" name="owner" maxlength="40" placeholder="Nombre o apodo" required autocomplete="off" list="participants"></label><datalist id="participants"></datalist>
+<div class="input-row"><label>Canción<input id="title" name="title" maxlength="100" placeholder="Nombre de la canción" required></label><label>Artista<input id="artist" name="artist" maxlength="100" placeholder="¿Quién la canta?" required></label></div>
+<label>Enlace de YouTube o Spotify<input id="url" name="url" type="url" maxlength="1000" placeholder="https://…" required><span class="field-hint">Enlace a un video o una canción, no a una playlist.</span></label>
+<label>¿Por qué le gusta? <span class="optional">opcional</span><textarea id="story" name="story" maxlength="280" rows="2" placeholder="Una historia para compartir cuando se revele…"></textarea></label>
+<button class="button primary full" type="submit">＋ Agregar a la playlist</button>
+</form></article>
+<aside class="panel playlist-panel"><div class="section-heading"><div><span class="eyebrow">EL MIX DEL EQUIPO</span><h2>Suena a ustedes</h2></div><span id="song-count" class="pill">0 canciones</span></div>
+<div id="song-list"></div>
+<div class="playlist-bottom"><div id="participant-summary" class="muted"></div><button id="start" class="button primary full">Comenzar partida <span>→</span></button><p class="field-hint center">Mínimo 2 personas, cada una con una canción.</p></div>
+</aside></div>
+<div class="utility-row"><button id="demo" class="text-button">Probar con canciones de ejemplo ↗</button><div><button id="export" class="text-button">Exportar playlist</button><button id="import-button" class="text-button">Importar playlist</button><input id="import-file" type="file" accept=".json,application/json" hidden></div></div>
+<div class="how-grid"><article><span>01 / PREPAREN</span><h3>Sus favoritas, en secreto.</h3><p>El anfitrión reúne los enlaces por chat y agrega las canciones.</p></article><article><span>02 / ESCUCHEN</span><h3>Diez segundos pueden bastar.</h3><p>Compartan el audio por la llamada y solo la ventana del juego, para ocultar el reproductor.</p></article><article><span>03 / CONÓZCANSE</span><h3>La historia también cuenta.</h3><p>Adivinen la canción y quién la eligió. Después, cuenten por qué les gusta.</p></article></div>
+</section>
+<section id="game" class="view" hidden>
+<div id="game-empty" class="panel empty-state"><div class="empty-note">♫</div><h2>El escenario está listo.</h2><p>Agrega sus canciones y comienza una partida desde La playlist.</p><button class="button primary" data-tab="setup">Preparar playlist →</button></div>
+<div id="game-content" hidden><div class="round-meta"><span id="round-label" class="eyebrow"></span><span class="pill">CANCIÓN +2 · PERSONA +1</span></div><div class="progress"><div id="progress-fill"></div></div>
+<article class="panel stage"><div class="vinyl" aria-hidden="true"><div class="vinyl-label">en tu<br><strong>playlist.</strong></div></div><span id="track-label" class="eyebrow">ESTÁ SONANDO UN SECRETO</span><h2 id="track-title">¿Te suena?</h2><p id="track-subtitle">Adivina la canción… y a la persona detrás del play.</p><p id="track-story" class="story" hidden></p>
+<div class="play-controls"><button id="open-track" class="button secondary">↗ Abrir canción · anfitrión</button><button id="timer-button" class="button secondary">◷ Iniciar 15 s</button><span id="timer" class="timer" role="timer">15</span></div><p class="field-hint">El enlace abre otra pestaña. Comparte solo el audio de esa pestaña, sin mostrarla.</p>
+<button id="reveal" class="button primary">Revelar canción y persona ✦</button>
+<div id="awards" class="awards" hidden><h3>¿Quién acertó primero?</h3><p class="muted">El anfitrión elige a los ganadores. Quien aportó la canción no recibe puntos en esta ronda.</p><div class="input-row"><label>Adivinó la canción · +2<select id="song-winner"></select></label><label>Adivinó a la persona · +1<select id="owner-winner"></select></label></div><button id="next" class="button primary">Guardar puntos y siguiente →</button></div>
+</article></div></section>
+<section id="results" class="view" hidden><article class="panel results-panel"><span class="eyebrow">LOS OÍDOS MÁS FINOS DEL GRUPO</span><h2 id="result-title">Así va la partida</h2><p id="result-description" class="muted">Cada canción es una nueva oportunidad de conocerse.</p><ol id="score-list"></ol><div class="result-actions"><button id="resume" class="button secondary">Volver a la ronda</button><button id="replay" class="button primary">Volver a jugar ↻</button></div></article></section>
+<footer><span>Hecho para escuchar y conocerse.</span><span id="save-status">Tu playlist se guarda en este navegador.</span></footer>
+</main>
+</body></html>
